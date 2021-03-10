@@ -1,24 +1,84 @@
-# README
+## アプリケーション名
+  tutti-app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## アプリケーション概要
+  複数人でのビデオチャットアプリ
 
-Things you may want to cover:
+## URL
 
-* Ruby version
 
-* System dependencies
+## テスト用アカウント
+email: 
+password: 
 
-* Configuration
+## 利用方法
+  新規登録・ログインしたユーザーのみtuttiを利用できる。
+  ホスト役がルームを作り、他のログイン中ユーザーを招待する。
+  ルームに招待されたユーザーは承認すると参加できる。
+  ルーム内でメッセージや画像の投稿、ビデオ通話ができる。
 
-* Database creation
+## 目指した課題解決
+  社内交流を円滑にし、社員の不安を取り除くこと。
+  新型コロナの影響でコミュニケーションを取る機会が減ってしまった。
+  新入社員の方や人事異動があった方は職場での精神的な不安が多い。
+  業務外で気軽に交流ができるアプリを使用し、社内交流を深める。
 
-* Database initialization
+## 用件定義
+- ユーザー管理機能
+- ルーム作成機能
+- メッセージ機能
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+## 実装予定の機能
+  メッセージの既読機能
+  メッセージデータは1日で自動削除
+  ビデオチャット機能
 
-* Deployment instructions
+## データベース設計
+## users テーブル
+| Column             | Type        | Options                   |
+| ------------------ | ----------- | ------------------------- |
+| nickname           | string      | null: false               |
+| last_name          | string      | null: false               |
+| first_name         | string      | null: false               |
+| last_name_kana     | string      | null: false               |
+| first_name_kana    | string      | null: false               |
+| email              | string      | null: false, unique: true |
+| encrypted_password | string      | null: false               |
 
-* ...
+### Association
+- has_many :messages
+- has_many :room_users
+
+
+## rooms テーブル
+| Column             | Type        | Options                   |
+| ------------------ | ----------- | ------------------------- |
+| name               | string      | null: false               |
+
+### Association
+- has_many :messages
+- has_many :room_users
+
+
+## room_users テーブル
+| Column        | Type        | Options                        |
+| ------------- | ----------- | ------------------------------ |
+| user          | references  | null: false, foreign_key: true |
+| room          | references  | null: false, foreign_key: true |
+
+### Association
+- belongs_to :user
+- belongs_to :room
+
+
+## messages テーブル
+| Column        | Type        | Options                        |
+| ------------- | ----------- | ------------------------------ |
+| text          | text        | null: false                    |
+| user          | references  | null: false, foreign_key: true |
+| room          | references  | null: false, foreign_key: true |
+
+### Association
+- belongs_to :user
+- belongs_to :room
